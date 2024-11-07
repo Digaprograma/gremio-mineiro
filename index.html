@@ -1,737 +1,833 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Veteranos Grêmio Mineiro</title>
+<html><head><base href="/" />
+<title>VETERANOS GRÊMIO MINEIRO</title>
+<meta charset="utf-8">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background-image: url('/a/cedacf37-2ee3-4d48-a660-073a0770c4cc');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    .tab-content {
+        background: rgba(203, 230, 255, 0.9); /* Light blue with opacity */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    #classification {
+        padding: 20px;
+        border-radius: 8px;
+    }
+    #classification .table {
+        background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+        margin-bottom: 20px;
+    }
+    #classification .mt-3 {
+        background-color: rgba(255, 255, 255, 0.9);
+        padding: 15px;
+        border-radius: 8px;
+    }
+    .nav-tabs .nav-link {
+        color: #495057;
+        font-weight: 500;
+    }
+    .nav-tabs .nav-link.active {
+        background-color: #009C3B; /* Brazilian green */
+        color: white;
+        font-weight: 600;
+    }
+    .match-card,
+    .match-editor {
+        background: rgba(255, 255, 255, 0.9); /* Changed from Brazilian yellow to light transparent white */
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        padding: 15px;
+    }
+    .table {
+        width: 100%;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    th, td {
+        padding: 10px;
+        text-align: center;
+    }
+    .table thead th {
+        background-color: #009C3B; /* Brazilian green */
+        color: white;
+        border-bottom: none;
+    }
+    .score-input {
+        width: 60px;
+        text-align: center;
+    }
+    .cards-input {
+        width: 60px; /* Increased from 45px */
+        text-align: center;
+        padding: 4px;
+        font-size: 16px; /* Added for better visibility */
+    }
+    .time {
+        color: #009C3B; /* Brazilian green */
+        font-weight: 500;
+        font-size: 0.95em;
+    }
+    .match-teams {
+        flex-grow: 1;
+        text-align: center;
+    }
+    .cards {
+        color: #495057;
+        font-weight: 500;
+    }
+    .btn-primary {
+        background-color: #009C3B; /* Brazilian green */
+        border-color: #009C3B;
+    }
+    .btn-primary:hover {
+        background-color: #007C2B; /* Darker green */
+        border-color: #007C2B;
+    }
+    .btn-success {
+        background-color: #009C3B;
+        border-color: #009C3B;
+    }
+    .btn-success:hover {
+        background-color: #007C2B;
+        border-color: #007C2B;
+    }
+    .btn-warning {
+        color: #000;
+        background-color: #ffc107;
+        border-color: #ffc107;
+    }
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+    h1, h3, h4 {
+        color: #009C3B; /* Brazilian green */
+    }
+    #classification h3 {
+        color: #009C3B;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        margin-bottom: 20px;
+    }
+    .form-control,
+    .team-input textarea {
+        background: white;
+        border: 1px solid #ddd;
+    }
+    .team-input {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+    }
+    #adminPanel .form-control,
+    #adminPanel .form-select {
+        background-color: white;
+        border: 1px solid #ddd;
+    }
+    .match-card:hover,
+    .match-editor:hover {
+        background: rgba(255, 255, 255, 1);
+        transition: background 0.3s ease;
+    }
+    .match-editor .d-flex.justify-content-center.align-items-center.mt-2 {
+        margin: 15px 0;
+    }
+</style>
 </head>
 <body>
-    <html><head><base href="/" />
-        <meta charset="utf-8">
-        <title>VETERANOS GRÊMIO MINEIRO</title>
-        <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: #f0f0f0;
-        }
-        
-        .tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .tab-btn {
-            padding: 10px 20px;
-            border: none;
-            background: #ddd;
-            cursor: pointer;
-        }
-        
-        .tab-btn.active {
-            background: #4CAF50;
-            color: white;
-        }
-        
-        .tab-content {
-            display: none;
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        
-        .team-form {
-            margin-bottom: 20px;
-        }
-        
-        .admin-panel {
-            margin-top: 20px;
-            padding: 20px;
-            background: #f9f9f9;
-            border-radius: 5px;
-        }
-        
-        .stats-section {
-            margin: 20px 0;
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .stats-section h3 {
-            color: #4CAF50;
-            margin-top: 0;
-            margin-bottom: 20px;
-        }
-        
-        #scorers-table, #cards-table {
-            width: 100%;
-            margin-top: 10px;
-        }
-        
-        #admin-area .stats-input {
-            margin: 10px 0;
-            padding: 10px;
-            background: #fff;
-            border-radius: 5px;
-        }
-        
-        /* Add styles for players list */
-        .players-list {
-            margin: 15px 0;
-        }
-        
-        .team-players {
-            background: white;
-            padding: 20px;
-            margin-bottom: 25px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .team-players h3 {
-            color: #4CAF50;
-            margin-top: 0;
-            border-bottom: 2px solid #4CAF50;
-            padding-bottom: 8px;
-            font-size: 24px;
-        }
-        
-        .team-players ul {
-            list-style-type: none;
-            padding: 0;
-            columns: 2;
-        }
-        
-        .team-players li {
-            padding: 8px 0;
-            margin: 4px 0;
-            font-size: 18px;
-            line-height: 1.4;
-        }
-        
-        /* Add these styles */
-        #matches-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .match-item {
-            background: white;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .match-date {
-            font-weight: bold;
-            color: #4CAF50;
-        }
-        
-        .match-teams {
-            font-size: 1.1em;
-            margin: 5px 0;
-        }
-        
-        .match-score {
-            color: #666;
-        }
-        </style>
-        </head>
-        <body>
-        <h1>VETERANOS GRÊMIO MINEIRO</h1>
-        
-        <div class="tabs">
-            <button class="tab-btn active" onclick="openTab('classificacao')">Classificação</button>
-            <button class="tab-btn" onclick="openTab('confrontos')">Confrontos</button>
-            <button class="tab-btn" onclick="openTab('estatuto')">Estatuto</button>
-            <button class="tab-btn" onclick="openTab('jogadores')">Jogadores</button>
-            <button class="tab-btn" onclick="openTab('estatisticas')">Estatísticas</button>
-            <button class="tab-btn" onclick="openTab('admin')">Administrador</button>
-        </div>
-        
-        <div id="classificacao" class="tab-content active">
-            <h2>Classificação</h2>
-            <table id="classificacao-table">
-                <tr>
-                    <th>Posição</th>
-                    <th>Time</th>
-                    <th>PG</th>
-                    <th>J</th>
-                    <th>V</th>
-                    <th>E</th>
-                    <th>D</th>
-                    <th>CV</th>
-                    <th>CA</th>
-                </tr>
+
+<div class="container">
+    <h1 class="text-center mb-4">VETERANOS GRÊMIO MINEIRO</h1>
+
+    <ul class="nav nav-tabs" id="mainTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#classification">Classificação</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#matches">Confrontos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#statute">Estatuto</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#stats">Estatísticas</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#admin">Administrador</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="classification" class="tab-pane active">
+            <h3>Classificação</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Equipe</th>
+                        <th>PG</th>
+                        <th>J</th>
+                        <th>V</th>
+                        <th>E</th>
+                        <th>D</th>
+                        <th>CA</th>
+                        <th>CV</th>
+                    </tr>
+                </thead>
+                <tbody id="classificationTable">
+                </tbody>
             </table>
-        </div>
-        
-        <div id="confrontos" class="tab-content">
-            <h2>Confrontos</h2>
-            <div id="matches-list"></div>
-        </div>
-        
-        <div id="estatuto" class="tab-content">
-            <h2>Estatuto da Pelada</h2>
-            <ul>
-                <li>Cada vitória vale 3 pontos</li>
-                <li>Cada empate vale 1 ponto</li>
-                <li>Os dois primeiros colocados fazem a final</li>
-                <li>Jogos acontecem aos domingos às 9:30 e 10:15</li>
-                <li>Cada time deve ter 20 jogadores</li>
-                <li>O campeonato tem 2 turnos</li>
-            </ul>
-        </div>
-        
-        <div id="jogadores" class="tab-content">
-            <h2>Lista de Jogadores</h2>
-            <div class="players-list" id="players-list">
-                <!-- Players will be displayed here -->
+            
+            <div class="mt-3">
+                <h5>Legenda:</h5>
+                <ul class="list-unstyled">
+                    <li><strong>PG</strong> - Pontos Ganhos</li>
+                    <li><strong>J</strong> - Jogos</li>
+                    <li><strong>V</strong> - Vitórias</li>
+                    <li><strong>E</strong> - Empates</li>
+                    <li><strong>D</strong> - Derrotas</li>
+                    <li><strong>CA</strong> - Cartões Amarelos</li>
+                    <li><strong>CV</strong> - Cartões Vermelhos</li>
+                </ul>
             </div>
         </div>
-        
-        <div id="estatisticas" class="tab-content">
-            <h2>Estatísticas do Campeonato</h2>
-            
-            <div class="stats-section">
-                <h3>Artilheiros</h3>
-                <table id="scorers-table">
-                    <tr>
-                        <th>Jogador</th>
-                        <th>Time</th>
-                        <th>Gols</th>
-                    </tr>
-                </table>
-            </div>
-        
-            <div class="stats-section">
-                <h3>Cartões</h3>
-                <table id="cards-table">
-                    <tr>
-                        <th>Jogador</th>
-                        <th>Time</th>
-                        <th>Cartões Amarelos</th>
-                        <th>Cartões Vermelhos</th>
-                    </tr>
-                </table>
-            </div>
+
+        <div id="matches" class="tab-pane fade">
+            <h3>Confrontos</h3>
+            <div id="matchSchedule"></div>
         </div>
-        
-        <div id="admin" class="tab-content">
-            <h2>Área do Administrador</h2>
-            <div id="login-form">
-                <input type="password" id="admin-password" placeholder="Senha">
-                <button onclick="login()">Entrar</button>
-            </div>
-            <div id="admin-area" style="display: none;">
-                <button onclick="logout()" style="float: right; background: #f44336; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">Sair</button>
-                <h3>Cadastro de Jogadores</h3>
-                <div id="team-players"></div>
-                <h3>Resultados dos Jogos</h3>
-                <div id="match-results"></div>
-            </div>
-        </div>
-        
-        <script>
-        const teams = ['Italia', 'Portugal', 'Holanda', 'Espanha'];
-        let players = {
-            Italia: [],
-            Portugal: [],
-            Holanda: [],
-            Espanha: []
-        };
-        let matches = [];
-        let standings = [];
-        let currentRound = 0;
-        let playerStats = {
-            scorers: [], // {player: string, team: string, goals: number}
-            cards: []    // {player: string, team: string, yellowCards: number, redCards: number}
-        };
-        
-        function openTab(tabName) {
-            const tabs = document.getElementsByClassName('tab-content');
-            for(let tab of tabs) {
-                tab.classList.remove('active');
-            }
-            const buttons = document.getElementsByClassName('tab-btn');
-            for(let btn of buttons) {
-                btn.classList.remove('active');
-            }
+
+        <div id="stats" class="tab-pane fade">
+            <h3>Estatísticas dos Jogadores</h3>
             
-            document.getElementById(tabName).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-        
-        function login() {
-            const password = document.getElementById('admin-password').value;
-            if(password === 'Gremio@') {
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('admin-area').style.display = 'block';
-                generateTeamForms();
-            } else {
-                alert('Senha incorreta!');
-            }
-        }
-        
-        function generateMatches() {
-            matches = [];
-            let gameDate = new Date(); // Start from current date
-            // Find next Sunday
-            gameDate.setDate(gameDate.getDate() + (7 - gameDate.getDay()));
-            
-            // Gerar jogos do primeiro turno
-            for(let i = 0; i < teams.length; i++) {
-                for(let j = i + 1; j < teams.length; j++) {
-                    matches.push({
-                        home: teams[i],
-                        away: teams[j],
-                        homeScore: null,
-                        awayScore: null,
-                        round: 1,
-                        date: new Date(gameDate),
-                        time: matches.length % 2 === 0 ? '09:30' : '10:50'
-                    });
-                    
-                    // If we've added 2 games, move to next Sunday
-                    if(matches.length % 2 === 0) {
-                        gameDate.setDate(gameDate.getDate() + 7);
-                    }
-                }
-            }
-            
-            // Gerar jogos do segundo turno (invertendo mando)
-            for(let i = 0; i < teams.length; i++) {
-                for(let j = i + 1; j < teams.length; j++) {
-                    matches.push({
-                        home: teams[j],
-                        away: teams[i],
-                        homeScore: null,
-                        awayScore: null,
-                        round: 2,
-                        date: new Date(gameDate),
-                        time: matches.length % 2 === 0 ? '09:30' : '10:50'
-                    });
-                    
-                    // If we've added 2 games, move to next Sunday
-                    if(matches.length % 2 === 0) {
-                        gameDate.setDate(gameDate.getDate() + 7);
-                    }
-                }
-            }
-            
-            displayMatches();
-        }
-        
-        // Helper function to check if two matches share any teams
-        function teamsOverlap(match1, match2) {
-            const match1Teams = [match1.home, match1.away];
-            const match2Teams = [match2.home, match2.away];
-            return match1Teams.some(team => match2Teams.includes(team));
-        }
-        
-        function displayMatches() {
-            const matchesList = document.getElementById('matches-list');
-            matchesList.innerHTML = '';
-            
-            // Group matches by round
-            const matchesByRound = {1: [], 2: []};
-            matches.forEach(match => {
-                matchesByRound[match.round].push(match);
-            });
-            
-            for(let round = 1; round <= 2; round++) {
-                const roundMatches = matchesByRound[round];
-                
-                roundMatches.forEach((match) => {
-                    const matchDiv = document.createElement('div');
-                    matchDiv.className = 'match-item';
-                    const matchDate = match.date ? new Date(match.date) : new Date();
-                    const dateDisplay = matchDate.toLocaleDateString('pt-BR');
-                    
-                    matchDiv.innerHTML = `
-                        <div class="match-date">
-                            Rodada ${round} - ${dateDisplay} ${match.time}
-                        </div>
-                        <div class="match-teams">
-                            ${match.home} vs ${match.away}
-                        </div>
-                        ${match.homeScore !== null ? 
-                            `<div class="match-score">Placar: ${match.homeScore} x ${match.awayScore}</div>` 
-                            : ''}
-                    `;
-                    matchesList.appendChild(matchDiv);
-                });
-            }
-        }
-        
-        function updateStandings() {
-            standings = teams.map(team => ({
-                team,
-                points: 0,
-                matches: 0,
-                wins: 0,
-                draws: 0,
-                losses: 0,
-                redCards: 0,    // Reset cards
-                yellowCards: 0  // Reset cards
-            }));
-            
-            // Atualizar classificação baseado nos resultados
-            matches.forEach(match => {
-                if(match.homeScore !== null) {
-                    const homeTeam = standings.find(t => t.team === match.home);
-                    const awayTeam = standings.find(t => t.team === match.away);
-                    
-                    homeTeam.matches++;
-                    awayTeam.matches++;
-                    
-                    if(match.homeScore > match.awayScore) {
-                        homeTeam.points += 3;
-                        homeTeam.wins++;
-                        awayTeam.losses++;
-                    } else if(match.homeScore < match.awayScore) {
-                        awayTeam.points += 3;
-                        awayTeam.wins++;
-                        homeTeam.losses++;
-                    } else {
-                        homeTeam.points += 1;
-                        awayTeam.points += 1;
-                        homeTeam.draws++;
-                        awayTeam.draws++;
-                    }
-                }
-            });
-            
-            // Add the cards from playerStats to team totals
-            playerStats.cards.forEach(card => {
-                const teamStanding = standings.find(t => t.team === card.team);
-                if (teamStanding) {
-                    teamStanding.yellowCards += card.yellowCards;
-                    teamStanding.redCards += card.redCards;
-                }
-            });
-            
-            // Ordenar por pontos
-            standings.sort((a, b) => b.points - a.points);
-            
-            displayStandings();
-        }
-        
-        function displayStandings() {
-            const table = document.getElementById('classificacao-table');
-            table.innerHTML = `
-                <tr>
-                    <th>Posição</th>
-                    <th>Time</th>
-                    <th>PG</th>
-                    <th>J</th>
-                    <th>V</th>
-                    <th>E</th>
-                    <th>D</th>
-                    <th>CV</th>
-                    <th>CA</th>
-                </tr>
-            `;
-            
-            standings.forEach((team, index) => {
-                const row = table.insertRow();
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${team.team}</td>
-                    <td>${team.points}</td>
-                    <td>${team.matches}</td>
-                    <td>${team.wins}</td>
-                    <td>${team.draws}</td>
-                    <td>${team.losses}</td>
-                    <td>${team.redCards}</td>
-                    <td>${team.yellowCards}</td>
-                `;
-            });
-        }
-        
-        function generateTeamForms() {
-            const container = document.getElementById('team-players');
-            container.innerHTML = '';
-            
-            teams.forEach(team => {
-                const teamDiv = document.createElement('div');
-                teamDiv.innerHTML = `
-                    <h4>${team}</h4>
-                    <textarea id="${team}-players" rows="10" cols="30"
-                        placeholder="Digite os nomes dos 20 jogadores (um por linha)"></textarea>
-                    <button onclick="saveTeamPlayers('${team}')">Salvar</button>
-                `;
-                container.appendChild(teamDiv);
-            });
-            
-            generateMatchResultsForms();
-            
-            // Add statistics input forms
-            const statsDiv = document.createElement('div');
-            statsDiv.innerHTML = `
-                <h3>Registrar Estatísticas</h3>
-                <div class="stats-input">
-                    <h4>Gols</h4>
-                    <select id="scorer-team">
-                        ${teams.map(team => `<option value="${team}">${team}</option>`).join('')}
-                    </select>
-                    <input type="text" id="scorer-name" placeholder="Nome do Jogador">
-                    <input type="number" id="goals" min="1" value="1">
-                    <button onclick="addGoal()">Registrar Gol</button>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <h4>Artilheiros</h4>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Jogador</th>
+                                <th>Equipe</th>
+                                <th>Gols</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scorersTable">
+                        </tbody>
+                    </table>
                 </div>
                 
-                <div class="stats-input">
+                <div class="col-md-6">
                     <h4>Cartões</h4>
-                    <select id="card-team">
-                        ${teams.map(team => `<option value="${team}">${team}</option>`).join('')}
-                    </select>
-                    <input type="text" id="card-player" placeholder="Nome do Jogador">
-                    <select id="card-type">
-                        <option value="yellow">Amarelo</option>
-                        <option value="red">Vermelho</option>
-                    </select>
-                    <button onclick="addCard()">Registrar Cartão</button>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Jogador</th>
+                                <th>Equipe</th>
+                                <th>CA</th>
+                                <th>CV</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cardsTable">
+                        </tbody>
+                    </table>
                 </div>
-            `;
-            document.getElementById('admin-area').appendChild(statsDiv);
+            </div>
+        </div>
+
+        <div id="admin" class="tab-pane fade">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3>Área Administrativa</h3>
+                <button onclick="logout()" class="btn btn-outline-danger" id="logoutBtn" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+                        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+                    </svg>
+                    Sair
+                </button>
+            </div>
+            <div id="loginForm">
+                <input type="password" id="adminPassword" class="form-control mb-2" placeholder="Senha">
+                <button onclick="checkPassword()" class="btn btn-primary">Entrar</button>
+            </div>
+            <div id="adminPanel" style="display: none;">
+                <h4 class="mt-4">Gerenciar Confrontos</h4>
+                <div id="matchEditor"></div>
+                
+                <button onclick="saveMatches()" class="btn btn-success mt-3">Salvar Resultados</button>
+                <button onclick="resetChampionship()" class="btn btn-danger mt-3 ms-2">Reiniciar Campeonato</button>
+
+                <h4 class="mt-4">Times</h4>
+                <div class="team-input">
+                    <h4>Itália</h4>
+                    <textarea class="form-control" id="italyPlayers" rows="5"></textarea>
+                </div>
+                <div class="team-input">
+                    <h4>Portugal</h4>
+                    <textarea class="form-control" id="portugalPlayers" rows="5"></textarea>
+                </div>
+                <div class="team-input">
+                    <h4>Holanda</h4>
+                    <textarea class="form-control" id="hollandPlayers" rows="5"></textarea>
+                </div>
+                <div class="team-input">
+                    <h4>Espanha</h4>
+                    <textarea class="form-control" id="spainPlayers" rows="5"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const teams = ['Itália', 'Portugal', 'Holanda', 'Espanha'];
+let players = {
+    'Itália': [],
+    'Portugal': [],
+    'Holanda': [],
+    'Espanha': []
+};
+let matches = [];
+let classification = teams.map(team => ({
+    name: team,
+    points: 0,
+    matches: 0,
+    victories: 0,
+    draws: 0,
+    defeats: 0,
+    yellowCards: 0,
+    redCards: 0
+}));
+
+function generateMatches() {
+    matches = [];
+    for(let i = 0; i < teams.length; i++) {
+        for(let j = i + 1; j < teams.length; j++) {
+            matches.push({
+                team1: teams[i],
+                team2: teams[j],
+                score1: null,
+                score2: null,
+                yellowCards1: 0,
+                yellowCards2: 0,
+                redCards1: 0,
+                redCards2: 0,
+                date: null,
+                scorers1: [],
+                scorers2: [],
+                cardsPlayers1: [],
+                cardsPlayers2: []
+            });
+        }
+    }
+    const firstRoundMatches = [...matches];
+    firstRoundMatches.forEach(match => {
+        matches.push({
+            team1: match.team2,
+            team2: match.team1,
+            score1: null,
+            score2: null,
+            yellowCards1: 0,
+            yellowCards2: 0,
+            redCards1: 0,
+            redCards2: 0,
+            date: null,
+            scorers1: [],
+            scorers2: [],
+            cardsPlayers1: [],
+            cardsPlayers2: []
+        });
+    });
+    matches = alternateTeams(matches);
+    setMatchDates();
+    return matches;
+}
+
+function alternateTeams(matches) {
+    let alternatedMatches = [];
+    let usedTeams = new Set();
+    let remainingMatches = [...matches];
+    
+    while (remainingMatches.length > 0) {
+        let matchIndex = remainingMatches.findIndex(match => 
+            !usedTeams.has(match.team1) && !usedTeams.has(match.team2)
+        );
+        
+        if (matchIndex === -1) {
+            usedTeams.clear();
+            matchIndex = 0;
         }
         
-        function generateMatchResultsForms() {
-            const container = document.getElementById('match-results');
-            container.innerHTML = '';
+        let match = remainingMatches.splice(matchIndex, 1)[0];
+        alternatedMatches.push(match);
+        usedTeams.add(match.team1);
+        usedTeams.add(match.team2);
+        
+        if (usedTeams.size >= teams.length) {
+            usedTeams.clear();
+        }
+    }
+    
+    return alternatedMatches;
+}
+
+function setMatchDates() {
+    let currentDate = new Date();
+    currentDate.setDate(currentDate.getDate() + (7 - currentDate.getDay()));
+    currentDate.setHours(9, 30, 0, 0);
+    
+    matches.forEach((match, index) => {
+        const matchNumber = index % 2; // Changed from 4 to 2 matches per day
+        const matchTime = new Date(currentDate);
+        
+        if (matchNumber === 0) matchTime.setHours(9, 30, 0);
+        else if (matchNumber === 1) matchTime.setHours(10, 30, 0);
+        
+        match.date = new Date(matchTime);
+        
+        if (matchNumber === 1) { // Changed from 3 to 1 since we now only have 2 matches
+            currentDate.setDate(currentDate.getDate() + 7);
+        }
+    });
+}
+
+function displayMatches() {
+    const matchSchedule = document.getElementById('matchSchedule');
+    matchSchedule.innerHTML = '';
+    
+    let currentDate = null;
+    
+    matches.sort((a, b) => new Date(a.date) - new Date(b.date))
+        .forEach(match => {
+            const matchDate = new Date(match.date);
+            const dateStr = matchDate.toLocaleDateString('pt-BR', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
             
-            matches.forEach((match, index) => {
-                const matchDiv = document.createElement('div');
-                const matchDate = match.date || new Date(); 
-                const matchTime = match.time || '09:30';
-                
-                matchDiv.innerHTML = `
-                    <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
-                        <p style="font-size: 18px; margin-bottom: 10px;">${match.home} vs ${match.away}</p>
-                        <div style="margin-bottom: 10px;">
-                            <label>Data:</label>
-                            <input type="date" id="date-${index}" 
-                                   value="${matchDate instanceof Date ? matchDate.toISOString().split('T')[0] : matchDate}">
-                            <label>Horário:</label>
-                            <input type="time" id="time-${index}" 
-                                   value="${match.time || matchTime}">
+            if (currentDate !== dateStr) {
+                currentDate = dateStr;
+                const dateHeader = document.createElement('h4');
+                dateHeader.className = 'mt-4 mb-3';
+                dateHeader.textContent = dateStr;
+                matchSchedule.appendChild(dateHeader);
+            }
+            
+            const matchCard = document.createElement('div');
+            matchCard.className = 'match-card';
+            
+            const time = matchDate.toLocaleTimeString('pt-BR', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            
+            let scoreDisplay = 'vs';
+            if (match.score1 !== null && match.score2 !== null) {
+                scoreDisplay = `${match.score1} x ${match.score2}`;
+            }
+            
+            matchCard.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="time">${time}</div>
+                    <div class="match-teams">
+                        <strong>${match.team1}</strong> 
+                        <span class="mx-2">${scoreDisplay}</span> 
+                        <strong>${match.team2}</strong>
+                    </div>
+                    <div class="cards">
+                        CA/CV: ${match.yellowCards1}/${match.redCards1} | ${match.yellowCards2}/${match.redCards2}
+                    </div>
+                </div>
+            `;
+            
+            matchSchedule.appendChild(matchCard);
+        });
+}
+
+function displayMatchEditor() {
+    const matchEditor = document.getElementById('matchEditor');
+    matchEditor.innerHTML = '';
+    
+    matches.forEach((match, index) => {
+        const matchDiv = document.createElement('div');
+        matchDiv.className = 'match-editor';
+        matchDiv.innerHTML = `
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <input type="datetime-local" class="form-control" 
+                           value="${match.date.toISOString().slice(0,16)}"
+                           onchange="updateMatch(${index}, 'date', this.value)">
+                </div>
+                <div class="col-md-7">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <select class="form-select me-2" style="width: auto;" 
+                                onchange="updateMatch(${index}, 'team1', this.value)">
+                            ${teams.map(team => `
+                                <option value="${team}" ${team === match.team1 ? 'selected' : ''}>
+                                    ${team}
+                                </option>
+                            `).join('')}
+                        </select>
+                        <input type="number" class="form-control score-input me-2" value="${match.score1 || ''}" 
+                               onchange="updateMatch(${index}, 'score1', this.value)">
+                        <span class="mx-2">vs</span>
+                        <input type="number" class="form-control score-input ms-2" value="${match.score2 || ''}"
+                               onchange="updateMatch(${index}, 'score2', this.value)">
+                        <select class="form-select ms-2" style="width: auto;"
+                                onchange="updateMatch(${index}, 'team2', this.value)">
+                            ${teams.map(team => `
+                                <option value="${team}" ${team === match.team2 ? 'selected' : ''}>
+                                    ${team}
+                                </option>
+                            `).join('')}
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center mt-2">
+                        <div class="me-2">
+                            <div>CA:</div>
+                            <div>CV:</div>
                         </div>
-                        <div>
-                            <input type="number" id="home-${index}" min="0" placeholder="Gols ${match.home}">
-                            <input type="number" id="away-${index}" min="0" placeholder="Gols ${match.away}">
-                            <button onclick="saveMatchResult(${index})" style="margin-left: 10px;">Salvar</button>
+                        <div class="me-2">
+                            <input type="number" class="form-control cards-input mb-1" value="${match.yellowCards1}"
+                                   onchange="updateMatch(${index}, 'yellowCards1', this.value)">
+                            <input type="number" class="form-control cards-input" value="${match.redCards1}"
+                                   onchange="updateMatch(${index}, 'redCards1', this.value)">
+                        </div>
+                        <span class="mx-2">|</span>
+                        <div class="ms-2">
+                            <input type="number" class="form-control cards-input mb-1" value="${match.yellowCards2}"
+                                   onchange="updateMatch(${index}, 'yellowCards2', this.value)">
+                            <input type="number" class="form-control cards-input" value="${match.redCards2}"
+                                   onchange="updateMatch(${index}, 'redCards2', this.value)">
                         </div>
                     </div>
-                `;
-                container.appendChild(matchDiv);
-            });
-        }
-        
-        function saveTeamPlayers(team) {
-            const playersList = document.getElementById(`${team}-players`).value.split('\n');
-            if(playersList.length !== 20) {
-                alert('Cada time deve ter exatamente 20 jogadores!');
-                return;
-            }
-            players[team] = playersList;
-            displayPlayers();
-            alert('Jogadores salvos com sucesso!');
-        }
-        
-        function displayPlayers() {
-            const playersList = document.getElementById('players-list');
-            playersList.innerHTML = '';
-            
-            teams.forEach(team => {
-                const teamDiv = document.createElement('div');
-                teamDiv.className = 'team-players';
-                let playerHtml = `<h3>${team}</h3><ul>`;
-                
-                if(players[team] && players[team].length > 0) {
-                    players[team].forEach(player => {
-                        playerHtml += `<li>${player}</li>`;
-                    });
-                } else {
-                    playerHtml += `<li>Nenhum jogador cadastrado</li>`;
+                    <div class="row mt-2">
+                        <div class="col-md-6">
+                            <h6>${match.team1} - Gols</h6>
+                            <div class="scorers-input" data-match="${index}" data-team="1">
+                                <button class="btn btn-sm btn-primary" onclick="addScorer(${index}, '${match.team1}', 1)">
+                                    + Adicionar Gol
+                                </button>
+                                <div class="scorers-list1"></div>
+                            </div>
+                            <h6 class="mt-2">${match.team1} - Cartões</h6>
+                            <div class="cards-input" data-match="${index}" data-team="1">
+                                <button class="btn btn-sm btn-warning" onclick="addCard(${index}, '${match.team1}', 1, 'yellow')">
+                                    + Cartão Amarelo
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="addCard(${index}, '${match.team1}', 1, 'red')">
+                                    + Cartão Vermelho
+                                </button>
+                                <div class="cards-list1"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>${match.team2} - Gols</h6>
+                            <div class="scorers-input" data-match="${index}" data-team="2">
+                                <button class="btn btn-sm btn-primary" onclick="addScorer(${index}, '${match.team2}', 2)">
+                                    + Adicionar Gol
+                                </button>
+                                <div class="scorers-list2"></div>
+                            </div>
+                            <h6 class="mt-2">${match.team2} - Cartões</h6>
+                            <div class="cards-input" data-match="${index}" data-team="2">
+                                <button class="btn btn-sm btn-warning" onclick="addCard(${index}, '${match.team2}', 2, 'yellow')">
+                                    + Cartão Amarelo
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="addCard(${index}, '${match.team2}', 2, 'red')">
+                                    + Cartão Vermelho
+                                </button>
+                                <div class="cards-list2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        matchEditor.appendChild(matchDiv);
+    });
+}
+
+function updateMatch(matchIndex, field, value) {
+    if (field === 'date') {
+        matches[matchIndex].date = new Date(value);
+    } else if (field === 'team1' || field === 'team2') {
+        matches[matchIndex][field] = value;
+    } else {
+        matches[matchIndex][field] = parseInt(value) || 0;
+    }
+    updateClassification();
+    displayMatches();
+}
+
+function addScorer(matchIndex, team, teamNumber) {
+    const playerName = prompt("Nome do jogador:");
+    if (!playerName) return;
+    
+    const scorersList = matches[matchIndex][`scorers${teamNumber}`];
+    const existingScorer = scorersList.find(s => s.name === playerName);
+    
+    if (existingScorer) {
+        existingScorer.goals++;
+    } else {
+        scorersList.push({name: playerName, goals: 1});
+    }
+    
+    updatePlayerStats();
+    displayMatchEditor();
+}
+
+function addCard(matchIndex, team, teamNumber, cardType) {
+    const playerName = prompt("Nome do jogador:");
+    if (!playerName) return;
+    
+    const cardsList = matches[matchIndex][`cardsPlayers${teamNumber}`];
+    cardsList.push({
+        name: playerName,
+        yellow: cardType === 'yellow',
+        red: cardType === 'red'
+    });
+    
+    updatePlayerStats();
+    displayMatchEditor();
+}
+
+function updatePlayerStats() {
+    const stats = {};
+    
+    matches.forEach(match => {
+        [1, 2].forEach(teamNum => {
+            const team = teamNum === 1 ? match.team1 : match.team2;
+            match[`scorers${teamNum}`].forEach(scorer => {
+                if (!stats[scorer.name]) {
+                    stats[scorer.name] = {team, goals: 0, yellowCards: 0, redCards: 0};
                 }
-                
-                playerHtml += '</ul>';
-                teamDiv.innerHTML = playerHtml;
-                playersList.appendChild(teamDiv);
+                stats[scorer.name].goals += scorer.goals;
             });
-        }
-        
-        function saveMatchResult(matchIndex) {
-            const homeScore = parseInt(document.getElementById(`home-${matchIndex}`).value);
-            const awayScore = parseInt(document.getElementById(`away-${matchIndex}`).value);
-            const newDate = document.getElementById(`date-${matchIndex}`).value;
-            const newTime = document.getElementById(`time-${matchIndex}`).value;
             
-            if(isNaN(homeScore) || isNaN(awayScore)) {
-                alert('Por favor, insira resultados válidos!');
-                return;
-            }
-            
-            matches[matchIndex].homeScore = homeScore;
-            matches[matchIndex].awayScore = awayScore;
-            matches[matchIndex].date = newDate;
-            matches[matchIndex].time = newTime;
-            
-            updateStandings();
-            displayMatches();
-            
-            if(isChampionshipComplete()) {
-                const finalists = standings.slice(0, 2);
-                alert(`Final do campeonato!\nFinalistas: ${finalists[0].team} vs ${finalists[1].team}`);
-            }
-        }
-        
-        function isChampionshipComplete() {
-            return matches.every(match => match.homeScore !== null);
-        }
-        
-        function logout() {
-            document.getElementById('login-form').style.display = 'block';
-            document.getElementById('admin-area').style.display = 'none';
-            document.getElementById('admin-password').value = ''; // Clear password
-        }
-        
-        // Inicializar o campeonato
-        // Add new statistics functions
-        function addGoal() {
-            const team = document.getElementById('scorer-team').value;
-            const player = document.getElementById('scorer-name').value;
-            const goals = parseInt(document.getElementById('goals').value);
-            
-            if (!player) {
-                alert('Digite o nome do jogador!');
-                return;
-            }
-            
-            let scorer = playerStats.scorers.find(s => s.player === player && s.team === team);
-            if (scorer) {
-                scorer.goals += goals;
-            } else {
-                playerStats.scorers.push({player, team, goals});
-            }
-            
-            updateStatistics();
-        }
-        
-        function addCard() {
-            const team = document.getElementById('card-team').value;
-            const player = document.getElementById('card-player').value;
-            const cardType = document.getElementById('card-type').value;
-            
-            if (!player) {
-                alert('Digite o nome do jogador!');
-                return;
-            }
-            
-            // Update player cards
-            let playerCard = playerStats.cards.find(c => c.player === player && c.team === team);
-            if (playerCard) {
-                if (cardType === 'yellow') playerCard.yellowCards++;
-                if (cardType === 'red') playerCard.redCards++;
-            } else {
-                playerStats.cards.push({
-                    player,
-                    team,
-                    yellowCards: cardType === 'yellow' ? 1 : 0,
-                    redCards: cardType === 'red' ? 1 : 0
-                });
-            }
-            
-            // Update team totals in standings
-            let teamStanding = standings.find(t => t.team === team);
-            if (teamStanding) {
-                if (cardType === 'yellow') teamStanding.yellowCards++;
-                if (cardType === 'red') teamStanding.redCards++;
-            }
-            
-            updateStatistics();
-            displayStandings(); // Refresh standings display
-        }
-        
-        function updateStatistics() {
-            // Update scorers table
-            const scorersTable = document.getElementById('scorers-table');
-            scorersTable.innerHTML = `
-                <tr>
-                    <th>Jogador</th>
-                    <th>Time</th>
-                    <th>Gols</th>
-                </tr>
+            match[`cardsPlayers${teamNum}`].forEach(card => {
+                if (!stats[card.name]) {
+                    stats[card.name] = {team, goals: 0, yellowCards: 0, redCards: 0};
+                }
+                if (card.yellow) stats[card.name].yellowCards++;
+                if (card.red) stats[card.name].redCards++;
+            });
+        });
+    });
+    
+    const scorersTable = document.getElementById('scorersTable');
+    scorersTable.innerHTML = '';
+    Object.entries(stats)
+        .filter(([_, stat]) => stat.goals > 0)
+        .sort((a, b) => b[1].goals - a[1].goals)
+        .forEach(([name, stat]) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${name}</td>
+                <td>${stat.team}</td>
+                <td>${stat.goals}</td>
             `;
-            
-            playerStats.scorers
-                .sort((a, b) => b.goals - a.goals)
-                .forEach(scorer => {
-                    const row = scorersTable.insertRow();
-                    row.innerHTML = `
-                        <td>${scorer.player}</td>
-                        <td>${scorer.team}</td>
-                        <td>${scorer.goals}</td>
-                    `;
-                });
-            
-            // Update cards table
-            const cardsTable = document.getElementById('cards-table');
-            cardsTable.innerHTML = `
-                <tr>
-                    <th>Jogador</th>
-                    <th>Time</th>
-                    <th>Cartões Amarelos</th>
-                    <th>Cartões Vermelhos</th>
-                </tr>
+            scorersTable.appendChild(row);
+        });
+    
+    const cardsTable = document.getElementById('cardsTable');
+    cardsTable.innerHTML = '';
+    Object.entries(stats)
+        .filter(([_, stat]) => stat.yellowCards > 0 || stat.redCards > 0)
+        .sort((a, b) => (b[1].yellowCards + b[1].redCards*2) - (a[1].yellowCards + a[1].redCards*2))
+        .forEach(([name, stat]) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${name}</td>
+                <td>${stat.team}</td>
+                <td>${stat.yellowCards}</td>
+                <td>${stat.redCards}</td>
             `;
-            
-            playerStats.cards
-                .sort((a, b) => (b.redCards * 2 + b.yellowCards) - (a.redCards * 2 + a.yellowCards))
-                .forEach(card => {
-                    const row = cardsTable.insertRow();
-                    row.innerHTML = `
-                        <td>${card.player}</td>
-                        <td>${card.team}</td>
-                        <td>${card.yellowCards}</td>
-                        <td>${card.redCards}</td>
-                    `;
-                });
+            cardsTable.appendChild(row);
+        });
+}
+
+function resetChampionship() {
+    if(confirm('Tem certeza que deseja reiniciar o campeonato? Todos os resultados serão perdidos.')) {
+        matches = generateMatches();
+        classification = teams.map(team => ({
+            name: team,
+            points: 0,
+            matches: 0,
+            victories: 0,
+            draws: 0,
+            defeats: 0,
+            yellowCards: 0,
+            redCards: 0
+        }));
+        updateClassification();
+        displayMatches();
+        displayMatchEditor();
+    }
+}
+
+function saveMatches() {
+    updateClassification();
+    updatePlayerStats();
+    alert('Resultados salvos com sucesso!');
+}
+
+function updateClassification() {
+    classification.forEach(team => {
+        team.points = 0;
+        team.matches = 0;
+        team.victories = 0;
+        team.draws = 0;
+        team.defeats = 0;
+        team.yellowCards = 0;
+        team.redCards = 0;
+    });
+
+    matches.forEach(match => {
+        if (match.score1 !== null && match.score2 !== null) {
+            const team1 = classification.find(t => t.name === match.team1);
+            const team2 = classification.find(t => t.name === match.team2);
+
+            team1.matches++;
+            team2.matches++;
+            team1.yellowCards += match.yellowCards1;
+            team1.redCards += match.redCards1;
+            team2.yellowCards += match.yellowCards2;
+            team2.redCards += match.redCards2;
+
+            if (match.score1 > match.score2) {
+                team1.victories++;
+                team2.defeats++;
+                team1.points += 2;
+            } else if (match.score2 > match.score1) {
+                team2.victories++;
+                team1.defeats++;
+                team2.points += 2;
+            } else {
+                team1.draws++;
+                team2.draws++;
+                team1.points += 1;
+                team2.points += 1;
+            }
+        }
+    });
+
+    classification.sort((a, b) => {
+        if (b.points !== a.points) {
+            return b.points - a.points;
+        }
+        if (b.victories !== a.victories) {
+            return b.victories - a.victories;
+        }
+        if (a.draws !== b.draws) {
+            return a.draws - a.draws;
         }
         
-        generateMatches();
-        updateStandings();
-        displayPlayers();
-        updateStatistics();
+        const aGoalDiff = matches.reduce((diff, match) => {
+            if (match.score1 !== null && match.score2 !== null) {
+                if (match.team1 === a.name) return diff + (match.score1 - match.score2);
+                if (match.team2 === a.name) return diff + (match.score2 - match.score1);
+            }
+            return diff;
+        }, 0);
         
-        </script>
-        </body>
-        </html>
-</body>
-</html>
+        const bGoalDiff = matches.reduce((diff, match) => {
+            if (match.score1 !== null && match.score2 !== null) {
+                if (match.team1 === b.name) return diff + (match.score1 - match.score2);
+                if (match.team2 === b.name) return diff + (match.score2 - match.score1);
+            }
+            return diff;
+        }, 0);
+        
+        if (bGoalDiff !== aGoalDiff) {
+            return bGoalDiff - aGoalDiff;
+        }
+        
+        const aGoals = matches.reduce((goals, match) => {
+            if (match.score1 !== null && match.score2 !== null) {
+                if (match.team1 === a.name) return goals + match.score1;
+                if (match.team2 === a.name) return goals + match.score2;
+            }
+            return goals;
+        }, 0);
+        
+        const bGoals = matches.reduce((goals, match) => {
+            if (match.score1 !== null && match.score2 !== null) {
+                if (match.team1 === b.name) return goals + match.score1;
+                if (match.team2 === b.name) return goals + match.score2;
+            }
+            return goals;
+        }, 0);
+        
+        if (bGoals !== aGoals) {
+            return bGoals - aGoals;
+        }
+        
+        if (b.redCards !== a.redCards) {
+            return b.redCards - a.redCards;
+        }
+        
+        if (b.yellowCards !== a.yellowCards) {
+            return b.yellowCards - a.yellowCards;
+        }
+        
+        return 0;
+    });
+
+    const tableBody = document.getElementById('classificationTable');
+    tableBody.innerHTML = '';
+    
+    classification.forEach(team => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${team.name}</td>
+            <td>${team.points}</td>
+            <td>${team.matches}</td>
+            <td>${team.victories}</td>
+            <td>${team.draws}</td>
+            <td>${team.defeats}</td>
+            <td>${team.yellowCards}</td>
+            <td>${team.redCards}</td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+function checkPassword() {
+    const password = document.getElementById('adminPassword').value;
+    if(password === 'Gremio@') {
+        document.getElementById('adminPanel').style.display = 'block';
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('logoutBtn').style.display = 'block';
+        displayMatchEditor();
+    } else {
+        alert('Senha incorreta!');
+    }
+}
+
+function logout() {
+    document.getElementById('adminPanel').style.display = 'none';
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('adminPassword').value = '';
+}
+
+// Initialize
+matches = generateMatches();
+updateClassification();
+displayMatches();
+</script>
+</body></html>
