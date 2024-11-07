@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veteranos Grêmio Mineiro</title>
+</head>
+<body>
+    <html><head><base href="/" />
+        <meta charset="utf-8">
+        <title>VETERANOS GRÊMIO MINEIRO</title>
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: #ddd;
+            cursor: pointer;
+        }
+        
+        .tab-btn.active {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .team-form {
+            margin-bottom: 20px;
+        }
+        
+        .admin-panel {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+        }
+        
+        .stats-section {
+            margin: 20px 0;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .stats-section h3 {
+            color: #4CAF50;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        
+        #scorers-table, #cards-table {
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        #admin-area .stats-input {
+            margin: 10px 0;
+            padding: 10px;
+            background: #fff;
+            border-radius: 5px;
+        }
+        
+        /* Add styles for players list */
+        .players-list {
+            margin: 15px 0;
+        }
+        
+        .team-players {
+            background: white;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .team-players h3 {
+            color: #4CAF50;
+            margin-top: 0;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 8px;
+            font-size: 24px;
+        }
+        
+        .team-players ul {
+            list-style-type: none;
+            padding: 0;
+            columns: 2;
+        }
+        
+        .team-players li {
+            padding: 8px 0;
+            margin: 4px 0;
+            font-size: 18px;
+            line-height: 1.4;
+        }
+        
+        /* Add these styles */
+        #matches-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .match-item {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .match-date {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        
+        .match-teams {
+            font-size: 1.1em;
+            margin: 5px 0;
+        }
+        
+        .match-score {
+            color: #666;
+        }
+        </style>
+        </head>
+        <body>
+        <h1>VETERANOS GRÊMIO MINEIRO</h1>
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('classificacao')">Classificação</button>
+            <button class="tab-btn" onclick="openTab('confrontos')">Confrontos</button>
+            <button class="tab-btn" onclick="openTab('estatuto')">Estatuto</button>
+            <button class="tab-btn" onclick="openTab('jogadores')">Jogadores</button>
+            <button class="tab-btn" onclick="openTab('estatisticas')">Estatísticas</button>
+            <button class="tab-btn" onclick="openTab('admin')">Administrador</button>
+        </div>
+        
+        <div id="classificacao" class="tab-content active">
+            <h2>Classificação</h2>
+            <table id="classificacao-table">
+                <tr>
+                    <th>Posição</th>
+                    <th>Time</th>
+                    <th>PG</th>
+                    <th>J</th>
+                    <th>V</th>
+                    <th>E</th>
+                    <th>D</th>
+                    <th>CV</th>
+                    <th>CA</th>
+                </tr>
+            </table>
+        </div>
+        
+        <div id="confrontos" class="tab-content">
+            <h2>Confrontos</h2>
+            <div id="matches-list"></div>
+        </div>
+        
+        <div id="estatuto" class="tab-content">
+            <h2>Estatuto da Pelada</h2>
+            <ul>
+                <li>Cada vitória vale 3 pontos</li>
+                <li>Cada empate vale 1 ponto</li>
+                <li>Os dois primeiros colocados fazem a final</li>
+                <li>Jogos acontecem aos domingos às 9:30 e 10:15</li>
+                <li>Cada time deve ter 20 jogadores</li>
+                <li>O campeonato tem 2 turnos</li>
+            </ul>
+        </div>
+        
+        <div id="jogadores" class="tab-content">
+            <h2>Lista de Jogadores</h2>
+            <div class="players-list" id="players-list">
+                <!-- Players will be displayed here -->
+            </div>
+        </div>
+        
+        <div id="estatisticas" class="tab-content">
+            <h2>Estatísticas do Campeonato</h2>
+            
+            <div class="stats-section">
+                <h3>Artilheiros</h3>
+                <table id="scorers-table">
+                    <tr>
+                        <th>Jogador</th>
+                        <th>Time</th>
+                        <th>Gols</th>
+                    </tr>
+                </table>
+            </div>
+        
+            <div class="stats-section">
+                <h3>Cartões</h3>
+                <table id="cards-table">
+                    <tr>
+                        <th>Jogador</th>
+                        <th>Time</th>
+                        <th>Cartões Amarelos</th>
+                        <th>Cartões Vermelhos</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <div id="admin" class="tab-content">
+            <h2>Área do Administrador</h2>
+            <div id="login-form">
+                <input type="password" id="admin-password" placeholder="Senha">
+                <button onclick="login()">Entrar</button>
+            </div>
+            <div id="admin-area" style="display: none;">
+                <button onclick="logout()" style="float: right; background: #f44336; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer;">Sair</button>
+                <h3>Cadastro de Jogadores</h3>
+                <div id="team-players"></div>
+                <h3>Resultados dos Jogos</h3>
+                <div id="match-results"></div>
+            </div>
+        </div>
+        
+        <script>
+        const teams = ['Italia', 'Portugal', 'Holanda', 'Espanha'];
+        let players = {
+            Italia: [],
+            Portugal: [],
+            Holanda: [],
+            Espanha: []
+        };
+        let matches = [];
+        let standings = [];
+        let currentRound = 0;
+        let playerStats = {
+            scorers: [], // {player: string, team: string, goals: number}
+            cards: []    // {player: string, team: string, yellowCards: number, redCards: number}
+        };
+        
+        function openTab(tabName) {
+            const tabs = document.getElementsByClassName('tab-content');
+            for(let tab of tabs) {
+                tab.classList.remove('active');
+            }
+            const buttons = document.getElementsByClassName('tab-btn');
+            for(let btn of buttons) {
+                btn.classList.remove('active');
+            }
+            
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+        
+        function login() {
+            const password = document.getElementById('admin-password').value;
+            if(password === 'Gremio@') {
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('admin-area').style.display = 'block';
+                generateTeamForms();
+            } else {
+                alert('Senha incorreta!');
+            }
+        }
+        
+        function generateMatches() {
+            matches = [];
+            let gameDate = new Date(); // Start from current date
+            // Find next Sunday
+            gameDate.setDate(gameDate.getDate() + (7 - gameDate.getDay()));
+            
+            // Gerar jogos do primeiro turno
+            for(let i = 0; i < teams.length; i++) {
+                for(let j = i + 1; j < teams.length; j++) {
+                    matches.push({
+                        home: teams[i],
+                        away: teams[j],
+                        homeScore: null,
+                        awayScore: null,
+                        round: 1,
+                        date: new Date(gameDate),
+                        time: matches.length % 2 === 0 ? '09:30' : '10:50'
+                    });
+                    
+                    // If we've added 2 games, move to next Sunday
+                    if(matches.length % 2 === 0) {
+                        gameDate.setDate(gameDate.getDate() + 7);
+                    }
+                }
+            }
+            
+            // Gerar jogos do segundo turno (invertendo mando)
+            for(let i = 0; i < teams.length; i++) {
+                for(let j = i + 1; j < teams.length; j++) {
+                    matches.push({
+                        home: teams[j],
+                        away: teams[i],
+                        homeScore: null,
+                        awayScore: null,
+                        round: 2,
+                        date: new Date(gameDate),
+                        time: matches.length % 2 === 0 ? '09:30' : '10:50'
+                    });
+                    
+                    // If we've added 2 games, move to next Sunday
+                    if(matches.length % 2 === 0) {
+                        gameDate.setDate(gameDate.getDate() + 7);
+                    }
+                }
+            }
+            
+            displayMatches();
+        }
+        
+        // Helper function to check if two matches share any teams
+        function teamsOverlap(match1, match2) {
+            const match1Teams = [match1.home, match1.away];
+            const match2Teams = [match2.home, match2.away];
+            return match1Teams.some(team => match2Teams.includes(team));
+        }
+        
+        function displayMatches() {
+            const matchesList = document.getElementById('matches-list');
+            matchesList.innerHTML = '';
+            
+            // Group matches by round
+            const matchesByRound = {1: [], 2: []};
+            matches.forEach(match => {
+                matchesByRound[match.round].push(match);
+            });
+            
+            for(let round = 1; round <= 2; round++) {
+                const roundMatches = matchesByRound[round];
+                
+                roundMatches.forEach((match) => {
+                    const matchDiv = document.createElement('div');
+                    matchDiv.className = 'match-item';
+                    const matchDate = match.date ? new Date(match.date) : new Date();
+                    const dateDisplay = matchDate.toLocaleDateString('pt-BR');
+                    
+                    matchDiv.innerHTML = `
+                        <div class="match-date">
+                            Rodada ${round} - ${dateDisplay} ${match.time}
+                        </div>
+                        <div class="match-teams">
+                            ${match.home} vs ${match.away}
+                        </div>
+                        ${match.homeScore !== null ? 
+                            `<div class="match-score">Placar: ${match.homeScore} x ${match.awayScore}</div>` 
+                            : ''}
+                    `;
+                    matchesList.appendChild(matchDiv);
+                });
+            }
+        }
+        
+        function updateStandings() {
+            standings = teams.map(team => ({
+                team,
+                points: 0,
+                matches: 0,
+                wins: 0,
+                draws: 0,
+                losses: 0,
+                redCards: 0,    // Reset cards
+                yellowCards: 0  // Reset cards
+            }));
+            
+            // Atualizar classificação baseado nos resultados
+            matches.forEach(match => {
+                if(match.homeScore !== null) {
+                    const homeTeam = standings.find(t => t.team === match.home);
+                    const awayTeam = standings.find(t => t.team === match.away);
+                    
+                    homeTeam.matches++;
+                    awayTeam.matches++;
+                    
+                    if(match.homeScore > match.awayScore) {
+                        homeTeam.points += 3;
+                        homeTeam.wins++;
+                        awayTeam.losses++;
+                    } else if(match.homeScore < match.awayScore) {
+                        awayTeam.points += 3;
+                        awayTeam.wins++;
+                        homeTeam.losses++;
+                    } else {
+                        homeTeam.points += 1;
+                        awayTeam.points += 1;
+                        homeTeam.draws++;
+                        awayTeam.draws++;
+                    }
+                }
+            });
+            
+            // Add the cards from playerStats to team totals
+            playerStats.cards.forEach(card => {
+                const teamStanding = standings.find(t => t.team === card.team);
+                if (teamStanding) {
+                    teamStanding.yellowCards += card.yellowCards;
+                    teamStanding.redCards += card.redCards;
+                }
+            });
+            
+            // Ordenar por pontos
+            standings.sort((a, b) => b.points - a.points);
+            
+            displayStandings();
+        }
+        
+        function displayStandings() {
+            const table = document.getElementById('classificacao-table');
+            table.innerHTML = `
+                <tr>
+                    <th>Posição</th>
+                    <th>Time</th>
+                    <th>PG</th>
+                    <th>J</th>
+                    <th>V</th>
+                    <th>E</th>
+                    <th>D</th>
+                    <th>CV</th>
+                    <th>CA</th>
+                </tr>
+            `;
+            
+            standings.forEach((team, index) => {
+                const row = table.insertRow();
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${team.team}</td>
+                    <td>${team.points}</td>
+                    <td>${team.matches}</td>
+                    <td>${team.wins}</td>
+                    <td>${team.draws}</td>
+                    <td>${team.losses}</td>
+                    <td>${team.redCards}</td>
+                    <td>${team.yellowCards}</td>
+                `;
+            });
+        }
+        
+        function generateTeamForms() {
+            const container = document.getElementById('team-players');
+            container.innerHTML = '';
+            
+            teams.forEach(team => {
+                const teamDiv = document.createElement('div');
+                teamDiv.innerHTML = `
+                    <h4>${team}</h4>
+                    <textarea id="${team}-players" rows="10" cols="30"
+                        placeholder="Digite os nomes dos 20 jogadores (um por linha)"></textarea>
+                    <button onclick="saveTeamPlayers('${team}')">Salvar</button>
+                `;
+                container.appendChild(teamDiv);
+            });
+            
+            generateMatchResultsForms();
+            
+            // Add statistics input forms
+            const statsDiv = document.createElement('div');
+            statsDiv.innerHTML = `
+                <h3>Registrar Estatísticas</h3>
+                <div class="stats-input">
+                    <h4>Gols</h4>
+                    <select id="scorer-team">
+                        ${teams.map(team => `<option value="${team}">${team}</option>`).join('')}
+                    </select>
+                    <input type="text" id="scorer-name" placeholder="Nome do Jogador">
+                    <input type="number" id="goals" min="1" value="1">
+                    <button onclick="addGoal()">Registrar Gol</button>
+                </div>
+                
+                <div class="stats-input">
+                    <h4>Cartões</h4>
+                    <select id="card-team">
+                        ${teams.map(team => `<option value="${team}">${team}</option>`).join('')}
+                    </select>
+                    <input type="text" id="card-player" placeholder="Nome do Jogador">
+                    <select id="card-type">
+                        <option value="yellow">Amarelo</option>
+                        <option value="red">Vermelho</option>
+                    </select>
+                    <button onclick="addCard()">Registrar Cartão</button>
+                </div>
+            `;
+            document.getElementById('admin-area').appendChild(statsDiv);
+        }
+        
+        function generateMatchResultsForms() {
+            const container = document.getElementById('match-results');
+            container.innerHTML = '';
+            
+            matches.forEach((match, index) => {
+                const matchDiv = document.createElement('div');
+                const matchDate = match.date || new Date(); 
+                const matchTime = match.time || '09:30';
+                
+                matchDiv.innerHTML = `
+                    <div style="margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
+                        <p style="font-size: 18px; margin-bottom: 10px;">${match.home} vs ${match.away}</p>
+                        <div style="margin-bottom: 10px;">
+                            <label>Data:</label>
+                            <input type="date" id="date-${index}" 
+                                   value="${matchDate instanceof Date ? matchDate.toISOString().split('T')[0] : matchDate}">
+                            <label>Horário:</label>
+                            <input type="time" id="time-${index}" 
+                                   value="${match.time || matchTime}">
+                        </div>
+                        <div>
+                            <input type="number" id="home-${index}" min="0" placeholder="Gols ${match.home}">
+                            <input type="number" id="away-${index}" min="0" placeholder="Gols ${match.away}">
+                            <button onclick="saveMatchResult(${index})" style="margin-left: 10px;">Salvar</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(matchDiv);
+            });
+        }
+        
+        function saveTeamPlayers(team) {
+            const playersList = document.getElementById(`${team}-players`).value.split('\n');
+            if(playersList.length !== 20) {
+                alert('Cada time deve ter exatamente 20 jogadores!');
+                return;
+            }
+            players[team] = playersList;
+            displayPlayers();
+            alert('Jogadores salvos com sucesso!');
+        }
+        
+        function displayPlayers() {
+            const playersList = document.getElementById('players-list');
+            playersList.innerHTML = '';
+            
+            teams.forEach(team => {
+                const teamDiv = document.createElement('div');
+                teamDiv.className = 'team-players';
+                let playerHtml = `<h3>${team}</h3><ul>`;
+                
+                if(players[team] && players[team].length > 0) {
+                    players[team].forEach(player => {
+                        playerHtml += `<li>${player}</li>`;
+                    });
+                } else {
+                    playerHtml += `<li>Nenhum jogador cadastrado</li>`;
+                }
+                
+                playerHtml += '</ul>';
+                teamDiv.innerHTML = playerHtml;
+                playersList.appendChild(teamDiv);
+            });
+        }
+        
+        function saveMatchResult(matchIndex) {
+            const homeScore = parseInt(document.getElementById(`home-${matchIndex}`).value);
+            const awayScore = parseInt(document.getElementById(`away-${matchIndex}`).value);
+            const newDate = document.getElementById(`date-${matchIndex}`).value;
+            const newTime = document.getElementById(`time-${matchIndex}`).value;
+            
+            if(isNaN(homeScore) || isNaN(awayScore)) {
+                alert('Por favor, insira resultados válidos!');
+                return;
+            }
+            
+            matches[matchIndex].homeScore = homeScore;
+            matches[matchIndex].awayScore = awayScore;
+            matches[matchIndex].date = newDate;
+            matches[matchIndex].time = newTime;
+            
+            updateStandings();
+            displayMatches();
+            
+            if(isChampionshipComplete()) {
+                const finalists = standings.slice(0, 2);
+                alert(`Final do campeonato!\nFinalistas: ${finalists[0].team} vs ${finalists[1].team}`);
+            }
+        }
+        
+        function isChampionshipComplete() {
+            return matches.every(match => match.homeScore !== null);
+        }
+        
+        function logout() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('admin-area').style.display = 'none';
+            document.getElementById('admin-password').value = ''; // Clear password
+        }
+        
+        // Inicializar o campeonato
+        // Add new statistics functions
+        function addGoal() {
+            const team = document.getElementById('scorer-team').value;
+            const player = document.getElementById('scorer-name').value;
+            const goals = parseInt(document.getElementById('goals').value);
+            
+            if (!player) {
+                alert('Digite o nome do jogador!');
+                return;
+            }
+            
+            let scorer = playerStats.scorers.find(s => s.player === player && s.team === team);
+            if (scorer) {
+                scorer.goals += goals;
+            } else {
+                playerStats.scorers.push({player, team, goals});
+            }
+            
+            updateStatistics();
+        }
+        
+        function addCard() {
+            const team = document.getElementById('card-team').value;
+            const player = document.getElementById('card-player').value;
+            const cardType = document.getElementById('card-type').value;
+            
+            if (!player) {
+                alert('Digite o nome do jogador!');
+                return;
+            }
+            
+            // Update player cards
+            let playerCard = playerStats.cards.find(c => c.player === player && c.team === team);
+            if (playerCard) {
+                if (cardType === 'yellow') playerCard.yellowCards++;
+                if (cardType === 'red') playerCard.redCards++;
+            } else {
+                playerStats.cards.push({
+                    player,
+                    team,
+                    yellowCards: cardType === 'yellow' ? 1 : 0,
+                    redCards: cardType === 'red' ? 1 : 0
+                });
+            }
+            
+            // Update team totals in standings
+            let teamStanding = standings.find(t => t.team === team);
+            if (teamStanding) {
+                if (cardType === 'yellow') teamStanding.yellowCards++;
+                if (cardType === 'red') teamStanding.redCards++;
+            }
+            
+            updateStatistics();
+            displayStandings(); // Refresh standings display
+        }
+        
+        function updateStatistics() {
+            // Update scorers table
+            const scorersTable = document.getElementById('scorers-table');
+            scorersTable.innerHTML = `
+                <tr>
+                    <th>Jogador</th>
+                    <th>Time</th>
+                    <th>Gols</th>
+                </tr>
+            `;
+            
+            playerStats.scorers
+                .sort((a, b) => b.goals - a.goals)
+                .forEach(scorer => {
+                    const row = scorersTable.insertRow();
+                    row.innerHTML = `
+                        <td>${scorer.player}</td>
+                        <td>${scorer.team}</td>
+                        <td>${scorer.goals}</td>
+                    `;
+                });
+            
+            // Update cards table
+            const cardsTable = document.getElementById('cards-table');
+            cardsTable.innerHTML = `
+                <tr>
+                    <th>Jogador</th>
+                    <th>Time</th>
+                    <th>Cartões Amarelos</th>
+                    <th>Cartões Vermelhos</th>
+                </tr>
+            `;
+            
+            playerStats.cards
+                .sort((a, b) => (b.redCards * 2 + b.yellowCards) - (a.redCards * 2 + a.yellowCards))
+                .forEach(card => {
+                    const row = cardsTable.insertRow();
+                    row.innerHTML = `
+                        <td>${card.player}</td>
+                        <td>${card.team}</td>
+                        <td>${card.yellowCards}</td>
+                        <td>${card.redCards}</td>
+                    `;
+                });
+        }
+        
+        generateMatches();
+        updateStandings();
+        displayPlayers();
+        updateStatistics();
+        
+        </script>
+        </body>
+        </html>
+</body>
+</html>
